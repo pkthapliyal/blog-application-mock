@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #f5f5f5;
+        }
+
+        /* Adjust the styling for the active page link if needed */
+        nav a.active {
+            font-weight: bold;
+            color: #f5f5f5;
+        }
+
+        #container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        #container h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        form input {
+            padding: 12px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        form input[type="submit"] {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+
+        form a {
+            margin-top: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        form a:hover {
+            color:
+                #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="../index.html">Signin</a>
+        <a href="#">Signup</a>
+        <a href="./blogs.html">Blogs</a>
+    </nav>
+
+    <div id="container">
+        <h1>Signup</h1>
+
+        <form action="">
+            <label for="">Username</label> <br>
+            <input type="text" placeholder="" required> <br>
+
+            <label for="">Email</label> <br>
+            <input type="email" placeholder="" required> <br>
+
+            <label for="">Avatar Link</label> <br>
+            <input type="text" placeholder="" required> <br>
+
+            <label for="">Password</label> <br>
+            <input type="password" placeholder="" required> <br>
+            <input type="submit" value="Submit"> <br>
+
+
+
+            <a href="../index.html">Click here to sign in</a>
+        </form>
+
+    </div>
+
+
+</body>
+
+<script>
+    let form = document.querySelector("form");
+
+    let url = "https://blogs-applications-mock.onrender.com"
+    // "https://image.shutterstock.com/image-photo/portrait-handsome-caucasian-man-formal-260nw-2142820441.jpg"
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault()
+        let username = form[0].value;
+        let email = form[1].value;
+        let avatar = form[2].value;
+        let password = form[3].value;
+        let obj = { email, password, avatar, username }
+        console.log(obj)
+        fetch(`${url}/api/register`, {
+            method: "POST",
+            mode: 'cors',
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(obj)
+        }).then((res) => {
+            return res.json();
+        }).then((data) => {
+            if (data.message == "User registered!") {
+                alert(data.message)
+
+                setTimeout(() => {
+                    window.location = "../index.html"
+                    form.reset()
+                }, 2000)
+            }
+            else {
+                alert(data.message)
+                form.reset()
+            }
+
+
+            console.log(data)
+        }).catch((err) => {
+            cosnole.log(err)
+        })
+    })
+
+</script>
+
+</html>

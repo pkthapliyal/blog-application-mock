@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
+    <style>
+        #container {
+            margin: auto;
+            width: 90%;
+            border: 1px solid teal;
+        }
+
+
+        #cards {
+            background-color: 1px solid black;
+            display: grid;
+            grid-template-columns: repeat(2, 45%);
+            column-gap: 5%
+        }
+
+        #cards>div {
+            margin-bottom: 5%;
+            padding: 2%;
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+        }
+
+        /*  filter styling */
+
+        /* Reset some default styles */
+        body,
+        h1,
+        p,
+        button,
+        select,
+        input {
+            /* margin: 0;
+            padding: 0;
+            border: none; */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Apply basic styling to the filterDiv container */
+        #filterDiv {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f5f5f5;
+        }
+
+        /* Style for the input box and search button */
+        #searchValue {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        #searchBtn {
+            padding: 5px 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* Style for the select elements */
+        select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        /* Adjust spacing between the select elements */
+        #filter,
+        #sort {
+            margin-left: 5px;
+        }
+
+        /* make a  model to the form  when click on craeteBlogBtn */
+        /* Style for the modal container */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Style for the modal content */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Style for the close button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Style for the form elements */
+        #createForm label {
+            margin-top: 10px;
+            display: block;
+            font-weight: bold;
+        }
+
+        #createForm input[type="text"],
+        #createForm textarea,
+        #createForm select,
+        #createForm input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        #createForm input[type="submit"] {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #createBlogBtn {
+            margin-left: 35%;
+            background-color: #333;
+            color: white;
+            width: 300px;
+            padding: 2%;
+            margin-bottom: 2%;
+            border-radius: 1px;
+            font-size: 16px;
+        }
+
+
+        #createBlogBtn:hover {
+
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            cursor: pointer;
+
+        }
+
+        /* Comment */
+        /* Style for the comment */
+        .comment-style {
+            background-color: #f5f5f5;
+            text-decoration: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            list-style: none;
+        }
+
+        .comment-style>p {
+            margin-top: 0px;
+            font-size: 10px;
+            padding-left: 5px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+        }
+
+        #editDiv {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        #editDiv button {
+            margin-left: 10px;
+        }
+
+        #editDiv button:nth-child(2) {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #imageBox img {
+            max-width: 150px;
+            max-height: 100px;
+            border-radius: 2%;
+            margin-right: 10px;
+        }
+
+        #nameBox h3 {
+            margin: 5px 0;
+        }
+
+        #profilecard {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        #likeCommentBox p {
+            margin: 5px 0;
+        }
+
+        #likeCommentBox button {
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #likeCommentBox button:hover {
+            background-color: #555;
+        }
+
+        #commentBox li {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+
+        #commentBox h5 {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        #commentBox p {
+            margin: 5px 0;
+        }
+
+        /* edit modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Style for the modal content */
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Style for the close button */
+
+
+        /* Style for the form elements */
+        #editForm label {
+            margin-top: 10px;
+            display: block;
+            font-weight: bold;
+        }
+
+        #editForm input[type="text"],
+        #editForm textarea,
+        #editForm select,
+        #editForm input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        #editForm input[type="submit"] {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #likes {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="../index.html">Signin</a>
+        <a href="./signup.html">Signup</a>
+        <a href="#">Blogs</a>
+    </nav>
+
+    <div id="container">
+
+        <!--  craete Blog -->
+
+
+
+        <div id="addBlogCard">
+            <button id="createBlogBtn">CREATE BLOG</button>
+        </div>
+
+        <div id="createBlogModal" class="modal">
+            <div id="createBlogCard" class="modal-content">
+                <span class="close">&times;</span>
+                <form action="" id="createForm">
+                    <label for="title">Title</label> <br>
+                    <input type="text" id="title" placeholder="Enter Title" required> <br>
+
+                    <label for="content">Content</label> <br>
+                    <textarea name="content" id="content" cols="30" rows="10"></textarea>
+
+                    <label for="category">Select Category</label> <br>
+                    <select name="category" id="category">
+                        <option value="">Select The Category</option>
+                        <option value="Business">Business</option>
+                        <option value="Tech">Tech</option>
+                        <option value="LifeStyle">LifeStyle</option>
+                        <option value="Entertainment">Entertainment</option>
+                    </select>
+
+                    <label for="date">Date</label> <br>
+                    <input type="date" id="date" required> <br>
+                    <input type="submit" value="Submit"> <br>
+                </form>
+            </div>
+        </div>
+
+        <!--    -->
+
+        <div id="filterDiv">
+
+            <span>
+                <input type="text" id="searchValue" placeholder="Search by title">
+                <button id="searchBtn">Search</button>
+
+            </span>
+
+
+            <span>
+                <select name="filter" id="filter">
+                    <option value="">Filter By Category</option>
+                    <option value="Business">Business</option>
+                    <option value="Tech">Tech</option>
+                    <option value="LifeStyle">LifeStyle</option>
+                    <option value="Entertainment">Entertainment</option>
+                </select>
+
+            </span>
+
+            <span>
+                <select name="sort" id="sort">
+                    <option value="">Sort By Date</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+
+                </select>
+
+            </span>
+
+
+
+        </div>
+
+        <div id="cards">
+
+        </div>
+
+    </div>
+
+
+    <!--  edit form -->
+    <div id="editBlogModal" class="modal">
+        <div id="createBlogCard" class="modal-content">
+            <span class="close">&times;</span>
+            <form action="" id="editForm">
+                <label for="title">Title</label> <br>
+                <input type="text" id="title" placeholder="Enter Title" required> <br>
+
+                <label for="content">Content</label> <br>
+                <textarea name="content" id="content" cols="30" rows="10"></textarea>
+
+                <label for="category">Select Category</label> <br>
+                <select name="category" id="category">
+                    <option value="">Select The Category</option>
+                    <option value="Business">Business</option>
+                    <option value="Tech">Tech</option>
+                    <option value="LifeStyle">LifeStyle</option>
+                    <option value="Entertainment">Entertainment</option>
+                </select>
+
+                <label for="date">Date</label> <br>
+                <input type="date" id="date" required> <br>
+                <input type="submit" value="Submit"> <br>
+            </form>
+        </div>
+    </div>
+
+
+
+
+</body>
+
+<script>
+    // let url = "https://blogs-applications-mock.onrender.com"
+    let url = 'http://localhost:3030'
+
+    let token = JSON.parse(localStorage.getItem("token"))
+    let userID = JSON.parse(localStorage.getItem("userID"))
+
+    let cards = document.getElementById("cards")
+
+    // if (!token) {
+    //     cards.innerHTML = "<h1>Login to see blogs</h1>"
+    //     return
+    // }
+
+
+    function fetchData() {
+        fetch(`${url}/api/blogs`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "content-type": "application/json",
+                "Authorization": token,
+            }
+        }).then((res) => {
+            return res.json()
+        }).then((data) => {
+            data = data.data;
+            // console.log(data)
+            showData(data)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    fetchData()
+
+
+
+    //  show data function
+    function showData(arr) {
+        cards.innerHTML = ""
+
+        arr.forEach((e, i) => {
+            // console.log(e)
+
+            let card = document.createElement("div");
+
+            //  edit div at the top
+            let editdiv = document.createElement("div")
+            let Editbtn = document.createElement("button");
+            Editbtn.innerText = "Edit"
+            let DeleteBtn = document.createElement("button")
+            DeleteBtn.innerText = "Delete"
+
+            DeleteBtn.addEventListener("click", () => {
+                fetch(`${url}/api/blogs/${e._id}`, {
+                    method: "DELETE",
+                    mode: 'cors',
+                    headers: {
+                        "content-type": "application/json",
+                        "Authorization": token
+                    }
+
+                }).then((res) => {
+                    return res.json();
+                }).then((data) => {
+                    console.log(data)
+                    alert(data.message)
+                    fetchData()
+
+
+                }).catch((err) => {
+                    console.log(err)
+                })
+            })
+
+            //  edit form
+            Editbtn.addEventListener("click", () => {
+
+                editModal.style.display = "block";
+                editForm[0].value = e.title;
+                editForm[1].value = e.content;
+                editForm[2].value = e.category;
+                editForm[3].value = e.date;
+                editForm.addEventListener("submit", (event) => {
+                    event.preventDefault()
+
+                    let title = editForm[0].value;
+                    let content = editForm[1].value;
+                    let category = editForm[2].value;
+                    let date = editForm[3].value;
+
+                    let obj = { title, content, category, date }
+
+
+
+                    fetch(`${url}/api/blogs/${e._id}`, {
+                        method: "PATCH",
+                        mode: 'cors',
+
+                        headers: {
+                            "content-type": "application/json",
+                            "Authorization": token,
+                        },
+                        body: JSON.stringify(obj)
+                    }).then((res) => {
+                        return res.json();
+                    }).then((data) => {
+                        console.log(data)
+                        alert(data.message)
+                        fetchData()
+                        editModal.style.display = "none";
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                })
+
+            })
+
+
+
+            editdiv.append(Editbtn, DeleteBtn)
+            editdiv.setAttribute("id", "editDiv");
+
+            //  profile and others stuff
+
+            let profilecard = document.createElement("div");
+
+
+            let imageBox = document.createElement("div")
+            let avatar = document.createElement("img");
+            avatar.src = e.avatar;
+            imageBox.append(avatar);
+
+            imageBox.setAttribute("id", "imageBox")
+
+            //  Name box
+            let nameBox = document.createElement("div");
+
+            let username = document.createElement("h3")
+            username.innerText = e.username;
+
+            let category = document.createElement("p")
+            category.innerText = e.category;
+
+            let date = document.createElement("h3")
+            date.innerText = e.date.slice(0, 10);
+
+            //  append the name, category, date
+            nameBox.append(username, category, date)
+
+            nameBox.setAttribute("id", "nameBox")
+
+            //  append image and name profilecard
+
+            profilecard.append(imageBox, nameBox);
+            profilecard.setAttribute("id", "profilecard")
+
+            let title = document.createElement("h1");
+            title.innerText = e.title;
+
+            let content = document.createElement("p");
+            content.innerText = e.content;
+
+            let likeCommentBox = document.createElement("div")
+
+            let likes = document.createElement("p");
+            likes.innerHTML = '<i style="font-size:24px;color:#880E4F" class="fa">&#xf004;</i>' + e.likes;
+            likes.setAttribute("id", "likes")
+
+            likes.addEventListener("click", () => {
+                fetch(`${url}/api/blogs/${e._id}/like`, {
+                    method: "PATCH",
+                    mode: 'cors',
+
+                    headers: {
+                        "content-type": "application/json",
+                        "Authorization": token,
+                    }
+
+                }).then((res) => {
+                    return res.json();
+                }).then((data) => {
+                    console.log(data)
+                    alert(data.message)
+                    fetchData()
+
+                }).catch((err) => {
+                    console.log(err)
+                })
+            })
+
+            let comment = document.createElement("p");
+            comment.innerText = e.comments.length + "comments";
+
+            let addCommentBtn = document.createElement("button")
+            addCommentBtn.innerText = "Comment";
+
+            likeCommentBox.append(likes, comment, addCommentBtn)
+
+            likeCommentBox.setAttribute("id", "likeCommentBox")
+
+
+
+            let commentBox = document.createElement("div");
+
+            commentBox.setAttribute("id", "commentBox")
+
+            e.comments.forEach((comment, i) => {
+                li = document.createElement("li")
+                let name = document.createElement("h5");
+                name.innerText = comment.username;
+                let content = document.createElement("p");
+                content.innerText = comment.content;
+
+                li.append(name, content)
+
+                li.setAttribute("class", "comment-style")
+                commentBox.append(li)
+
+            })
+
+            //  add a comment
+            addCommentBtn.addEventListener("click", () => {
+                li = document.createElement("li")
+
+                let content = document.createElement("textarea");
+                content.setAttribute("id", "commentValue")
+
+                let subMitComment = document.createElement("button");
+                subMitComment.innerText = "comment";
+
+                // submitting hte comment
+                subMitComment.addEventListener("click", () => {
+                    let commentValue = document.getElementById("commentValue").value
+                    let obj = { content: commentValue }
+
+
+                    fetch(`${url}/api/blogs/${e._id}/comment`, {
+                        method: "PATCH",
+                        mode: 'cors',
+
+                        headers: {
+                            "content-type": "application/json",
+                            "Authorization": token,
+                        },
+                        body: JSON.stringify(obj)
+                    }).then((res) => {
+                        return res.json();
+                    }).then((data) => {
+                        console.log(data)
+                        alert(data.message)
+                        fetchData()
+
+
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+
+                })
+
+                li.append(name, content, subMitComment)
+
+                li.setAttribute("class", "comment-style")
+                commentBox.append(li)
+            })
+
+
+            if (userID == e.userID) {
+                editdiv.setAttribute("id", "editDiv");
+                card.append(editdiv, profilecard, title, content, likeCommentBox, commentBox)
+            }
+            else {
+                card.append(profilecard, title, content, likeCommentBox, commentBox)
+            }
+
+
+
+            card.setAttribute("id", "card")
+            cards.append(card)
+
+
+
+
+        })
+    }
+
+
+
+
+
+    //  Filter and sort
+
+    let filter = document.getElementById("filter");
+    let sort = document.getElementById("sort");
+
+    let searchBtn = document.getElementById("searchBtn");
+    let searchValue = document.getElementById("searchValue");
+
+    searchBtn.addEventListener("click", () => {
+        fetch(`${url}/api/blogs?title=${searchValue.value}`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "content-type": "application/json",
+                "Authorization": token
+            }
+        }).then((res) => {
+            return res.json()
+        }).then((data) => {
+            data = data.data;
+            // console.log(data)
+            showData(data)
+        }).catch((err) => {
+            console.log(err)
+        })
+
+    })
+
+    filter.addEventListener("change", () => {
+        // console.log(filter.value)
+
+        fetch(`${url}/api/blogs?category=${filter.value}`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "content-type": "application/json",
+                "Authorization": token
+            }
+        }).then((res) => {
+            return res.json()
+        }).then((data) => {
+            data = data.data;
+            // console.log(data)
+            showData(data)
+        }).catch((err) => {
+            console.log(err)
+        })
+
+
+    })
+
+
+    sort.addEventListener("change", () => {
+        // console.log(filter.value)
+        console.log(sort.value)
+
+        fetch(`${url}/api/blogs?sort=date&order=${sort.value}`, {
+            method: "GET",
+            mode: "cors",
+            headers: {
+                "content-type": "application/json",
+                "Authorization": token
+            }
+        }).then((res) => {
+            return res.json()
+        }).then((data) => {
+            data = data.data;
+            console.log(data)
+            showData(data)
+        }).catch((err) => {
+            console.log(err)
+        })
+
+    })
+
+
+
+
+    //  Addd blogs 
+    const createBlogBtn = document.getElementById("createBlogBtn");
+    const modal = document.getElementById("createBlogModal");
+    const editModal = document.getElementById("editBlogModal");
+    const closeModal = document.querySelector(".close");
+    let createForm = document.getElementById("createForm")
+
+    createBlogBtn.addEventListener("click", () => {
+        modal.style.display = "block";
+        event.stopPropagation();
+
+
+    });
+
+    closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+
+    //  make blog
+
+    createForm.addEventListener("submit", (e) => {
+        e.preventDefault()
+        // modal.style.display = "block";
+
+        let title = createForm[0].value;
+        let content = createForm[1].value;
+        let category = createForm[2].value;
+        let date = createForm[3].value;
+
+        let obj = { title, content, category, date }
+        console.log(obj)
+        console.log(token)
+
+        fetch(`${url}/api/blogs/`, {
+            method: "POST",
+            mode: 'cors',
+
+            headers: {
+                "content-type": "application/json",
+                "Authorization": token,
+            },
+            body: JSON.stringify(obj)
+        }).then((res) => {
+            return res.json();
+        }).then((data) => {
+            console.log(data)
+            alert(data.message)
+            fetchData()
+            modal.style.display = "none";
+
+        }).catch((err) => {
+            console.log(err)
+        })
+    });
+
+</script>
+
+</html>
